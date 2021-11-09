@@ -7,7 +7,7 @@
                     <a class="nav-link" href="index.php">Jela</a>
                 </li>
                 <li class="nav-item mx-auto">
-                    <a class="nav-link" href="namirnice.php">Namirnice</a>
+                    <a class="nav-link" href="namirnica.php">Namirnice</a>
                 </li>
                
                 

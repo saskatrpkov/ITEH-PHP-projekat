@@ -27,7 +27,7 @@
     <script src="./main.js"></script>
     <script>
         $(function () {
-
+            // ucitaj('./handler/jelo.php')
         })
     </script>
 </body>
