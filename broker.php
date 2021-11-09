@@ -16,6 +16,9 @@ class Broker{
         }
         return $broker;
     }
+    public function getLastId(){
+        return $this->mysqli->insert_id;
+    }
     public function vratiKolekciju($upit){
         $rezultat=$this->mysqli->query($upit);
         $response=[];

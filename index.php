@@ -132,13 +132,15 @@
                 const opis = $('#opis').val();
 
                 upisi("./handler/jelo.php", {
-                    metoda: 'obrisi',
-                    id,
-                    naziv,
-                    posno,
-                    vreme_pripreme: vremePripreme,
-                    opis,
-                    sastojci
+                    metoda: selektovaniId ? 'izmeni' : 'kreiraj',
+                    jelo: JSON.stringify({
+                        id: selektovaniId,
+                        naziv,
+                        posno,
+                        vreme_pripreme: vremePripreme,
+                        opis,
+                        sastojci
+                    })
                 }).then(() => {
                     ucitajJela();
                     setSastojci();
@@ -215,7 +217,9 @@
                 $('#vratiSe').attr('hidden', true);
                 $('#naziv').val('')
                 $('#opis').val('')
-
+                $('#posno').val('1')
+                $('#vremePripreme').val('')
+                setSastojci([]);
             }
             else {
                 ucitaj('./handler/jelo.php?metoda=sastojci&id=' + selektovaniId).then(setSastojci);
@@ -224,6 +228,8 @@
                 $('#vratiSe').attr('hidden', false);
                 $('#naziv').val(sel.naziv)
                 $('#opis').val(sel.opis)
+                $('#posno').val(sel.posno)
+                $('#vremePripreme').val(sel.vreme_pripreme)
             }
         }
         function ucitajJela() {
@@ -256,7 +262,7 @@
                         <td>${namirnice.find(e => e.id == sastojak.namirnica_id).naziv}</td>
                         <td>${sastojak.kolicina}</td>
                         <td>
-                              <button class='btn btn-danger' onClick="izbaciSastojak(${index})">Izbaci</button>    
+                              <button class='btn btn-danger' onClick="izbaciSastojak(${sastojak.namirnica_id})">Izbaci</button>    
                         </td>
                     </tr>
                 `)
@@ -268,7 +274,7 @@
             console.log(val);
             $('#namirnica').html('');
             const filtrirani = val.filter(element => {
-                return sastojci.find(s => Number(s.namirnica_id) === Number(element.id)) === undefined;
+                return sastojci.find(s => !s.obrisan && Number(s.namirnica_id) === Number(element.id)) === undefined;
             });
             for (let namirnica of filtrirani) {
                 $('#namirnica').append(`
@@ -276,13 +282,19 @@
                 `)
             }
         }
-        function izbaciSastojak(index) {
-            const sastojak = sastojci[index];
+        function izbaciSastojak(namirnicaId) {
+            const sastojak = sastojci.find(element => element.namirnica_id == namirnicaId);
             if (!sastojak.id) {
-                setSastojci(sastojci.filter((e, ind) => index !== ind));
+                setSastojci(sastojci.filter((element) => element.namirnica_id != namirnicaId));
             } else {
-                sastojak.obrisan = true;
-                setSastojci(sastojci);
+                setSastojci(sastojci.map((element, ind) => {
+                    if (Number(element.namirnica_id) === Number(namirnicaId)) {
+                        return {
+                            ...element, obrisan: true,
+                        }
+                    }
+                    return element;
+                }));
             }
         }
 

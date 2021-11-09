@@ -16,15 +16,10 @@ $broker=Broker::getBroker();
             echo json_encode( $broker->izmeni("delete from namirnica where id=".$id));
         }
         if($metoda==='kreiraj'){
-            $naziv=$_POST["naziv"];
-            $opis=$_POST["opis"];
-            echo json_encode($broker->izmeni("insert into namirnica(naziv,opis) values ('".$naziv."','".$opis."')"));
+           
         }
         if($metoda=='izmeni'){
-            $naziv=$_POST["naziv"];
-            $opis=$_POST["opis"];
-            $id=$_POST["id"];
-            echo json_encode($broker->izmeni("update namirnica set naziv='".$naziv."', opis='".$opis."' where id=".$id));
+           
         }
     }
 
