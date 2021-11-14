@@ -88,6 +88,8 @@
                 }).then(() => {
                     setSelektovaniId(undefined);
                     ucitajNamirnice();
+                }).catch(err => {
+                    alert("desila se greska");
                 })
             })
         })
@@ -141,7 +143,9 @@
             upisi("./handler/namirnica.php", {
                 metoda: 'obrisi',
                 id
-            }).then(ucitajNamirnice);
+            }).then(ucitajNamirnice).catch(err => {
+                alert('nije moguce brisanje namirnice');
+            })
         }
     </script>
 </body>

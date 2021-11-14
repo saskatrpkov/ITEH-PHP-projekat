@@ -1,7 +1,6 @@
 <?php
 include "../broker.php";
 $broker=Broker::getBroker();
-$broker=Broker::getBroker();
 
     if(isset($_GET["metoda"])){
         $metoda=$_GET["metoda"];
@@ -16,10 +15,15 @@ $broker=Broker::getBroker();
             echo json_encode( $broker->izmeni("delete from namirnica where id=".$id));
         }
         if($metoda==='kreiraj'){
-           
+           $naziv=$_POST['naziv'];
+           $opis=$_POST['opis'];
+           echo json_encode( $broker->izmeni("insert namirnica(naziv,opis) values('".$naziv."','".$opis."')"));
         }
         if($metoda=='izmeni'){
-           
+            $id=$_POST["id"];
+            $naziv=$_POST['naziv'];
+            $opis=$_POST['opis'];
+            echo json_encode( $broker->izmeni("update namirnica set naziv='".$naziv."' , opis='".$opis."' where id=".$id));
         }
     }
 

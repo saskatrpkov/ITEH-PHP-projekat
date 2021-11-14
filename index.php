@@ -143,8 +143,8 @@
                     })
                 }).then(() => {
                     ucitajJela();
-                    setSastojci();
-                    setSelektovaniId();
+                    setSastojci([]);
+                    setSelektovaniId(undefined);
 
                 });
 
@@ -172,12 +172,9 @@
                     }])
                     return;
                 } else {
-                    setSastojci(sastojci.map(element => {
-                        if (element.jelo_id == selektovaniId && element.namirnica_id == namirnicaId) {
-                            return { ...element, obrisan: false }
-                        }
-                        return element;
-                    }))
+                    postojeci.obrisan = false;
+                    postojeci.kolicina = kolicina;
+                    setSastojci(sastojci)
                 }
             })
         })
@@ -243,7 +240,6 @@
             popuniMeni(namirnice);
         }
         function setSastojci(val) {
-            console.log(val);
             sastojci = val || [];
             popuniMeni(namirnice);
             popuniTabeluSastojaka(sastojci);
@@ -271,7 +267,7 @@
         }
 
         function popuniMeni(val) {
-            console.log(val);
+
             $('#namirnica').html('');
             const filtrirani = val.filter(element => {
                 return sastojci.find(s => !s.obrisan && Number(s.namirnica_id) === Number(element.id)) === undefined;
@@ -287,14 +283,8 @@
             if (!sastojak.id) {
                 setSastojci(sastojci.filter((element) => element.namirnica_id != namirnicaId));
             } else {
-                setSastojci(sastojci.map((element, ind) => {
-                    if (Number(element.namirnica_id) === Number(namirnicaId)) {
-                        return {
-                            ...element, obrisan: true,
-                        }
-                    }
-                    return element;
-                }));
+                sastojak.obrisan = true;
+                setSastojci(sastojci);
             }
         }
 
